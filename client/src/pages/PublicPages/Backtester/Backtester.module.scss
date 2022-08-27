@@ -1,0 +1,91 @@
+@import '../../../assets/scss/mixins';
+
+$color: lighten($main-bg-color, 10%);
+
+.Container {
+  header {
+    @include flex;
+    gap: 2rem;
+  }
+}
+
+.Actions,
+.Inputs,
+.Outputs {
+  gap: 1rem;
+  background-color: $color;
+  padding: 1rem;
+  border-radius: 0.5rem;
+
+  button {
+    border: none;
+    width: 100%;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+  }
+
+  input {
+    border: 1px solid lighten($color, 20%);
+    background-color: transparent;
+    color: #fff;
+    height: 2rem;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+
+    &:focus-visible {
+      outline: 1px solid hsl(216, 81%, 62%);
+    }
+  }
+}
+
+.Actions {
+  @include flex($flex-flow: column nowrap);
+  flex: 1;
+}
+
+.Inputs {
+  @include flex;
+  gap: 1rem;
+  flex: 3;
+
+  > * {
+    @include flex($flex-flow: column nowrap);
+    gap: 1rem;
+  }
+
+  input {
+    width: 100%;
+  }
+}
+
+.Outputs {
+  @include flex(center, center);
+  gap: 4rem;
+  flex: 4;
+  padding-inline: 4rem;
+
+  div {
+    @include flex(center, center, column nowrap);
+    gap: 0.5rem;
+  }
+}
+
+.Btn__Main {
+  background-color: hsl(216, 67%, 50%);
+  color: #fff;
+}
+
+.Btn__Reset {
+  background-color: hsl(201, 13%, 39%);
+  color: #fff;
+}
+
+.Btn__Profit {
+  background-color: hsl(154, 66%, 51%);
+  color: #fff;
+}
+
+.Btn__Loss {
+  background-color: hsl(0, 51%, 53%);
+  color: #fff;
+}

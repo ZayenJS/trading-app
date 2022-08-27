@@ -1,0 +1,81 @@
+@import '../../assets/scss/mixins';
+
+$color: lighten($main-bg-color, 10%);
+
+.Container {
+  background-color: $sidebar-bg-color;
+  padding: 1rem;
+  min-height: 100vh;
+}
+
+.LogoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  margin-block-end: 4rem;
+}
+
+.Navigation {
+  @include flex(stretch, space-between, column nowrap);
+  height: calc(100vh - 10rem);
+}
+
+.List {
+  @include flex($flex-flow: column nowrap);
+  gap: 0.5rem;
+}
+
+.ListItem {
+  width: 100%;
+}
+
+.Home {
+  &:before {
+    content: '';
+  }
+}
+.Backtester {
+  &:before {
+    content: '';
+  }
+}
+.Strategies {
+  &:before {
+    content: '';
+  }
+}
+
+.NavLink {
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  display: block;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+
+  &.Active {
+    background-color: transparentize($color, 0.45);
+  }
+
+  &:hover {
+    background-color: transparentize($color, 0.25);
+  }
+
+  span {
+    display: block;
+  }
+}
+
+.LogoutForm {
+  button {
+    font-size: 1rem;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    display: block;
+    transition: all 0.2s ease;
+    background-color: transparent;
+    border: none;
+    color: #fff;
+  }
+}

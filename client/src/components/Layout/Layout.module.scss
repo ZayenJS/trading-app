@@ -1,0 +1,11 @@
+// @import "path_to_file";
+
+.Container {
+  display: grid;
+  grid-template-columns: 15rem 1fr;
+  min-height: 100vh;
+
+  main {
+    padding: 4rem;
+  }
+}

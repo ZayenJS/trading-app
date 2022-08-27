@@ -1,0 +1,49 @@
+@import '../../assets/scss/variables';
+
+.Container {
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid lighten($main-bg-color, 10%);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background-color: lighten($main-bg-color, 10%);
+    border-radius: 0.25rem;
+    transition: all 0.2s ease-in-out;
+  }
+
+  &.Light {
+    &::before {
+      transform: translate(0);
+    }
+  }
+
+  &.Dark {
+    &::before {
+      transform: translate(100%);
+    }
+  }
+
+  div {
+    position: relative;
+    z-index: 1;
+  }
+
+  button {
+    margin: 0.2px;
+    border: none;
+    background-color: transparent;
+    color: #bbb;
+    z-index: 1;
+
+    &.Active {
+      color: #fff;
+    }
+  }
+}
