@@ -3,9 +3,19 @@
 $color: lighten($main-bg-color, 10%);
 
 .Container {
+  height: calc(100vh - 8rem);
+  width: 100%;
+  @include flex($flex-flow: column nowrap);
+  gap: 4rem;
+
   header {
     @include flex;
     gap: 2rem;
+  }
+
+  main {
+    width: 100%;
+    height: 100%;
   }
 }
 
@@ -22,6 +32,7 @@ $color: lighten($main-bg-color, 10%);
     width: 100%;
     border-radius: 0.25rem;
     padding: 0.5rem;
+    transition: all 0.2s ease;
   }
 
   input {
@@ -71,21 +82,46 @@ $color: lighten($main-bg-color, 10%);
 }
 
 .Btn__Main {
-  background-color: hsl(216, 67%, 50%);
+  $btn-main-bg-color: hsl(215, 67%, 50%);
+  background-color: $btn-main-bg-color;
   color: #fff;
+
+  &:hover {
+    background-color: lighten($btn-main-bg-color, 10%);
+  }
 }
 
 .Btn__Reset {
-  background-color: hsl(201, 13%, 39%);
+  $btn-reset-bg-color: hsl(201, 13%, 39%);
+  background-color: $btn-reset-bg-color;
   color: #fff;
+
+  &:hover {
+    background-color: lighten($btn-reset-bg-color, 10%);
+  }
 }
 
 .Btn__Profit {
-  background-color: hsl(154, 66%, 51%);
+  $btn-profit-bg-color: hsl(154, 60%, 41%);
+  background-color: $btn-profit-bg-color;
   color: #fff;
+
+  &:hover {
+    background-color: lighten($btn-profit-bg-color, 10%);
+  }
 }
 
 .Btn__Loss {
-  background-color: hsl(0, 51%, 53%);
+  $btn-loss-bg-color: hsl(0, 51%, 53%);
+  background-color: $btn-loss-bg-color;
   color: #fff;
+
+  &:hover {
+    background-color: lighten($btn-loss-bg-color, 10%);
+  }
+}
+
+.Chart {
+  width: 100%;
+  height: 100%;
 }

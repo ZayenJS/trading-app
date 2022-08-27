@@ -1,5 +1,5 @@
-import { ChangeEvent, FC, FormEvent, MouseEvent, useMemo, useState } from 'react';
-import { AreaChart, XAxis, YAxis, Tooltip, Area, Line, LineChart } from 'recharts';
+import { ChangeEvent, FC, FormEvent, useMemo, useState } from 'react';
+import { AreaChart, XAxis, YAxis, Tooltip, Area, ResponsiveContainer } from 'recharts';
 
 import classes from './Backtester.module.scss';
 
@@ -27,10 +27,14 @@ const Backtester: FC<BacktesterProps> = () => {
     // open modal to save backtest
   };
 
-  const onResetButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
-    console.log('reset');
-
-    // reset form
+  const onResetButtonClick = () => {
+    setState({
+      initial: 0,
+      profit: 0,
+      loss: 0,
+      accumulatedValue: 0,
+      data: [],
+    });
   };
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -55,12 +59,35 @@ const Backtester: FC<BacktesterProps> = () => {
     setState((prevState) => ({ ...prevState, ...updatedState }));
   };
 
+  const onSetInitial = () => {
+    if (!state.initial) alert('Please enter an initial value');
+
+    setState((prevState) => ({
+      ...prevState,
+      data: [
+        ...prevState.data,
+        {
+          name: state.profit + state.loss + 1,
+          value: +prevState.initial.toFixed(2),
+          profit: 0,
+          loss: 0,
+        },
+      ],
+    }));
+  };
+
   const onAddProfit = () => {
     setState((prevState) => ({
       ...prevState,
       profit: +prevState.profit + 1,
-      accumulatedValue: +prevState.accumulatedValue * (1 + 0.025),
-      data: [...prevState.data, { value: +prevState.accumulatedValue * (1 + 0.025) }],
+      accumulatedValue: +(prevState.accumulatedValue * (1 + 0.025)).toFixed(2),
+      data: [
+        ...prevState.data,
+        {
+          name: state.profit + state.loss + 1,
+          value: +(prevState.accumulatedValue * (1 + 0.025)).toFixed(2),
+        },
+      ],
     }));
   };
 
@@ -68,8 +95,14 @@ const Backtester: FC<BacktesterProps> = () => {
     setState((prevState) => ({
       ...prevState,
       loss: +prevState.loss + 1,
-      accumulatedValue: +prevState.accumulatedValue * (1 - 0.025),
-      data: [...prevState.data, { value: +prevState.accumulatedValue * (1 - 0.025) }],
+      accumulatedValue: +(prevState.accumulatedValue * (1 - 0.025)).toFixed(2),
+      data: [
+        ...prevState.data,
+        {
+          name: state.profit + state.loss + 1,
+          value: +(prevState.accumulatedValue * (1 - 0.025)).toFixed(2),
+        },
+      ],
     }));
   };
 
@@ -98,7 +131,7 @@ const Backtester: FC<BacktesterProps> = () => {
         <div className={classes.Inputs}>
           <div>
             <input name="initial" onChange={onInputChange} value={state.initial} type="number" min="1" step="0.01" />
-            <button type="button" className={classes.Btn__Main}>
+            <button onClick={onSetInitial} type="button" className={classes.Btn__Main}>
               Set initial
             </button>
           </div>
@@ -126,37 +159,35 @@ const Backtester: FC<BacktesterProps> = () => {
           </div>
           <div>
             <span>Wins / Losses</span>
-            <span>
-              {state.profit}W / {state.loss}L
-            </span>
+            <span>{state.profit || state.loss ? `${state.profit}W / ${state.loss}L` : '-'}</span>
           </div>
         </div>
       </header>
       <main>
         <div className={classes.Chart}>
-          {/* <ResponsiveContainer width="100%" height="100%"> */}
-          <AreaChart
-            width={500}
-            height={400}
-            data={state.data}
-            margin={{
-              top: 10,
-              right: 30,
-              left: 0,
-              bottom: 0,
-            }}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <defs>
-              <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <Area type="monotone" dataKey="value" fill="url(#colorUv)" />
-          </AreaChart>
-          {/* </ResponsiveContainer> */}
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart
+              width={500}
+              height={400}
+              data={state.data}
+              margin={{
+                top: 10,
+                right: 30,
+                left: 0,
+                bottom: 0,
+              }}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <defs>
+                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#356295" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#fff" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <Area type="monotone" dataKey="value" fill="url(#colorUv)" />
+            </AreaChart>
+          </ResponsiveContainer>
         </div>
       </main>
     </div>

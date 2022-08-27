@@ -1,11 +1,13 @@
-// @import "path_to_file";
+@import '../../assets/scss/variables';
 
 .Container {
+  overflow: hidden;
   display: grid;
-  grid-template-columns: 15rem 1fr;
+  grid-template-columns: $sidebar-width 1fr;
   min-height: 100vh;
 
-  main {
+  > main {
     padding: 4rem;
+    width: calc(100vw - $sidebar-width);
   }
 }

@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  db:
+    image: postgres
+    container_name: db-trading-backtester
+    environment:
+      - POSTGRES_USER=trading-backtester
+      - POSTGRES_PASSWORD=trading-backtester
+      - POSTGRES_DB=trading-backtester
+      - POSTGRES_HOST=localhost
+      - POSTGRES_PORT=5433
+    restart: unless-stopped
+    ports:
+      - 5433:5432
+    volumes:
+      - trading-backtester-db:/var/lib/postgresql/data
+
+volumes:
+  trading-backtester-db:
