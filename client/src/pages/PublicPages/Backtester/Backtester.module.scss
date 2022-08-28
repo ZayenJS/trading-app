@@ -72,12 +72,31 @@ $color: lighten($main-bg-color, 10%);
 .Outputs {
   @include flex(center, center);
   gap: 4rem;
-  flex: 4;
-  padding-inline: 4rem;
-
+  flex: 8;
+  padding: 1rem;
   div {
     @include flex(center, center, column nowrap);
     gap: 0.5rem;
+  }
+}
+
+.PnL {
+  &__Positive {
+    color: $btn-profit-bg-color;
+
+    &::before {
+      font-family: $trading-ff;
+      content: $arrow-up;
+    }
+  }
+
+  &__Negative {
+    color: $btn-loss-bg-color;
+
+    &::before {
+      font-family: $trading-ff;
+      content: $arrow-down;
+    }
   }
 }
 

@@ -22,26 +22,29 @@ const CustomTooltip: FC<CustomTooltipProps> = ({ active, payload }) => {
       text = 'This was a losing trade';
     }
 
-    let currencyText = `${data.value}${currency}`;
+    const value = data.value.toFixed(2);
+    let currencyText = `${value}${currency}`;
 
     if (currency === '$') {
-      currencyText = `$${data.value}`;
+      currencyText = `$${value}`;
     }
 
     let diffText = '';
 
     if (data.diff) {
-      diffText = `+${data.diff}€`;
+      const diff = data.diff.toFixed(2);
+
+      diffText = `+${diff}€`;
 
       if (data.type === 'loss') {
-        diffText = `-${data.diff}€`;
+        diffText = `-${diff}€`;
       }
 
       if (currency === '$') {
-        diffText = `+$${data.diff}`;
+        diffText = `+$${diff}`;
 
         if (data.type === 'loss') {
-          diffText = `-$${data.diff}`;
+          diffText = `-$${diff}`;
         }
       }
     }
