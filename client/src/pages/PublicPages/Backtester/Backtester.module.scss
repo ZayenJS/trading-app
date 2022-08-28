@@ -82,7 +82,6 @@ $color: lighten($main-bg-color, 10%);
 }
 
 .Btn__Main {
-  $btn-main-bg-color: hsl(215, 67%, 50%);
   background-color: $btn-main-bg-color;
   color: #fff;
 
@@ -92,7 +91,6 @@ $color: lighten($main-bg-color, 10%);
 }
 
 .Btn__Reset {
-  $btn-reset-bg-color: hsl(201, 13%, 39%);
   background-color: $btn-reset-bg-color;
   color: #fff;
 
@@ -102,7 +100,6 @@ $color: lighten($main-bg-color, 10%);
 }
 
 .Btn__Profit {
-  $btn-profit-bg-color: hsl(154, 60%, 41%);
   background-color: $btn-profit-bg-color;
   color: #fff;
 
@@ -112,7 +109,6 @@ $color: lighten($main-bg-color, 10%);
 }
 
 .Btn__Loss {
-  $btn-loss-bg-color: hsl(0, 51%, 53%);
   background-color: $btn-loss-bg-color;
   color: #fff;
 

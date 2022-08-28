@@ -1,0 +1,23 @@
+@import '../../assets/scss/variables';
+
+.Container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background-color: $main-bg-color-light;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.Profit {
+  font-weight: 600;
+  color: $btn-profit-bg-color;
+}
+
+.Loss {
+  font-weight: 600;
+  color: $btn-loss-bg-color;
+}

@@ -1,5 +1,6 @@
-@import './reset';
-@import './mixins';
+@import 'reset';
+@import 'keyframes';
+@import 'mixins';
 
 #root {
   background-color: $main-bg-color;

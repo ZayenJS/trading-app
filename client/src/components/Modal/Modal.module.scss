@@ -1,0 +1,66 @@
+@import '../../assets/scss/variables';
+@import '../../assets/scss/mixins';
+
+.Container {
+  /* your styles here... */
+}
+
+.Backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.Modal {
+  @include flex(center, center, column nowrap);
+  gap: 2rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 500px;
+  background-color: $main-bg-color-light;
+  border-radius: 0.25rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+  padding: 2rem;
+  color: #fff;
+  font-size: 1.25rem;
+  text-align: center;
+  line-height: 1.5;
+
+  div {
+    @include flex(center, center);
+    gap: 2rem;
+  }
+
+  button {
+    border: none;
+    width: 100%;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    transition: all 0.2s ease;
+    color: #fff;
+  }
+}
+
+.Btn__Cancel {
+  background-color: $btn-profit-bg-color;
+
+  &:hover {
+    background-color: lighten($btn-profit-bg-color, 10%);
+  }
+}
+
+.Btn__Confirm {
+  background-color: $btn-loss-bg-color;
+
+  &:hover {
+    background-color: lighten($btn-loss-bg-color, 10%);
+  }
+}

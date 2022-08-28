@@ -2,7 +2,6 @@ import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import NotFound from '../components/NotFound/NotFound';
 
-import '../logo.svg';
 import Backtester from '../pages/PublicPages/Backtester/Backtester';
 import Home from '../pages/PublicPages/Home/Home';
 import PublicPages from '../pages/PublicPages/PublicPages';
