@@ -27,6 +27,11 @@ const SideNav: FC<SideNavProps> = () => {
         name: 'Strategies',
         to: '/strategies',
       },
+      {
+        key: 4,
+        name: 'Trading Calendar',
+        to: '/trading-calendar',
+      },
     ],
     [],
   );

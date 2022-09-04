@@ -6,6 +6,7 @@ import Backtester from '../pages/PublicPages/Backtester/Backtester';
 import Home from '../pages/PublicPages/Home/Home';
 import PublicPages from '../pages/PublicPages/PublicPages';
 import Strategies from '../pages/PublicPages/Strategies/Strategies';
+import TradingCalendar from '../pages/PublicPages/TradingCalendar/TradingCalendar';
 
 export interface AppProps {}
 
@@ -17,6 +18,7 @@ const App: FC<AppProps> = () => {
         <Route path="/" element={<Home />} />
         <Route path="/backtester" element={<Backtester />} />
         <Route path="/strategies" element={<Strategies />} />
+        <Route path="/trading-calendar" element={<TradingCalendar />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

@@ -1,6 +1,6 @@
 @import '../../../assets/scss/mixins';
 
-$color: lighten($main-bg-color, 10%);
+$color: lighten($main-bg-color, 5%);
 
 .Container {
   height: calc(100vh - 8rem);

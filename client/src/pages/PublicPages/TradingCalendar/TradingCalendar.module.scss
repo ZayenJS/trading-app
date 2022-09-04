@@ -1,0 +1,8 @@
+@import '../../../assets/scss/variables';
+
+.Container {
+  background-color: lighten($main-bg-color, 5%);
+  width: 100%;
+  height: calc(100vh - 8rem);
+  border-radius: 0.5rem;
+}

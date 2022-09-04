@@ -1,0 +1,68 @@
+@import '../../assets/scss/mixins';
+
+.Container {
+  border: 1px solid rgba($main-bg-color, 0.2);
+  color: #eee;
+  height: 100%;
+  padding: 0.5rem;
+
+  header {
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 2rem 1rem;
+    @include flex(center, space-between);
+    background-color: transparent;
+  }
+
+  main {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: 1fr repeat(5, 2fr);
+    grid-auto-rows: 2fr;
+    align-items: center;
+    justify-content: center;
+    height: calc(100% - 85px);
+    width: 100%;
+    background-color: transparent;
+  }
+}
+
+%Day {
+  @include flex(center, center);
+  position: relative;
+  border: 1px solid rgba($main-bg-color-light, 0.5);
+  height: 100%;
+}
+
+.Day {
+  @extend %Day;
+  font-size: 0.9rem;
+  cursor: pointer;
+
+  &.Today {
+    .Day__Number {
+      font-size: 1.1rem;
+      color: gold;
+    }
+  }
+
+  &.Selected {
+    background-color: $main-bg-color-light;
+  }
+
+  &.Previous,
+  &.Next {
+    color: rgb(118, 118, 118);
+  }
+
+  &__Number {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  &__Name {
+    @extend %Day;
+    cursor: default;
+  }
+}
