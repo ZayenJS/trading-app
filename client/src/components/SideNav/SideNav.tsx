@@ -22,11 +22,11 @@ const SideNav: FC<SideNavProps> = () => {
         name: 'Backtester',
         to: '/backtester',
       },
-      {
-        key: 3,
-        name: 'Strategies',
-        to: '/strategies',
-      },
+      // {
+      //   key: 3,
+      //   name: 'Strategies',
+      //   to: '/strategies',
+      // },
       {
         key: 4,
         name: 'Trading Calendar',

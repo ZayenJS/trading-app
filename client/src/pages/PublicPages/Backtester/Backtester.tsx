@@ -218,7 +218,7 @@ const Backtester: FC<BacktesterProps> = () => {
     return `${winRate.toFixed(2)}%`;
   }, [state.data]);
 
-  const winsAndsLosses = useMemo(() => {
+  const winsAndLosses = useMemo(() => {
     const winningTrades = state.data.filter((d) => d.type === 'profit').length;
     const losingTrades = state.data.filter((d) => d.type === 'loss').length;
 
@@ -326,7 +326,7 @@ const Backtester: FC<BacktesterProps> = () => {
             </div>
             <div>
               <span>PnL</span>
-              <span className={PnL.num !== null ? (PnL.num! > 0 ? classes.PnL__Positive : classes.PnL__Negative) : ''}>
+              <span className={PnL.num !== null ? (PnL.num > 0 ? classes.PnL__Positive : classes.PnL__Negative) : ''}>
                 {PnL.str}
               </span>
             </div>
@@ -336,7 +336,7 @@ const Backtester: FC<BacktesterProps> = () => {
             </div>
             <div>
               <span>Wins / Losses</span>
-              <span>{winsAndsLosses}</span>
+              <span>{winsAndLosses}</span>
             </div>
             <div>
               <span>Average profit/trade</span>
@@ -391,6 +391,9 @@ const Backtester: FC<BacktesterProps> = () => {
       <Portal animate animationDuration={200} mount={!!state.errorMessageVisible}>
         <Modal
           type="error"
+          classNames={{
+            body: classes.Modal__Body,
+          }}
           text={state.errorMessage}
           onCancel={() => setState((ps) => ({ ...ps, errorMessageVisible: false }))}
           clickOutside

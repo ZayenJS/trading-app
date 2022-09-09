@@ -33,10 +33,13 @@
   font-size: 1.25rem;
   text-align: center;
   line-height: 1.5;
+}
 
+:where(.Modal) {
   div {
     @include flex(center, center);
     gap: 2rem;
+    width: 100%;
   }
 
   button {
@@ -49,7 +52,7 @@
   }
 }
 
-.Btn__Cancel {
+.Btn__Success {
   background-color: $btn-profit-bg-color;
 
   &:hover {
@@ -57,7 +60,7 @@
   }
 }
 
-.Btn__Confirm {
+.Btn__Danger {
   background-color: $btn-loss-bg-color;
 
   &:hover {
