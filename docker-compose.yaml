@@ -2,7 +2,7 @@ version: '3.8'
 services:
   db:
     image: postgres
-    container_name: db-trading-backtester
+    container_name: trading_app_db
     environment:
       - POSTGRES_USER=trading-backtester
       - POSTGRES_PASSWORD=trading-backtester
@@ -14,6 +14,16 @@ services:
       - 5433:5432
     volumes:
       - trading-backtester-db:/var/lib/postgresql/data
+
+  maildev:
+    image: maildev/maildev
+    container_name: trading_app_maildev
+    ports:
+      - '3002:1025'
+      - '3003:1080'
+    depends_on:
+      - db
+    restart: unless-stopped
 
 volumes:
   trading-backtester-db:

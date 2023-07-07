@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
 }
 
 datasource db {
@@ -10,22 +11,47 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id                 Int      @id @default(autoincrement())
-  firstName          String   @map("first_name")
-  lastName           String   @map("last_name")
-  userName           String   @unique @map("user_name")
-  email              String   @unique
-  password           String
-  resetPasswordToken String   @map("reset_password_token")
-  createdAt          DateTime @default(now()) @map("created_at")
-  updatedAt          DateTime @updatedAt @map("updated_at")
+enum TradeType {
+  LONG
+  SHORT
 }
 
-model Strategy {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+model User {
+  id               String    @id @default(uuid())
+  firstName        String    @map("first_name")
+  lastName         String    @map("last_name")
+  userName         String    @map("username")
+  email            String    @unique
+  authToken        String?   @map("auth_token")
+  authTokenExpires DateTime? @map("auth_token_expires")
+
+  // relations
+  trades Trade[]
+
+  // timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Trade {
+  id            String    @id @default(uuid())
+  type          TradeType
+  baseCurrency  String    @map("base_currency")
+  quoteCurrency String    @map("quote_currency")
+  notes         String?
+  entry_price   Float     @map("entry_price")
+  exit_price    Float     @map("exit_price")
+  entry_date    DateTime  @map("entry_date")
+  exit_date     DateTime? @map("exit_date")
+  quantity      Float
+
+  // relations
+  traderId String @map("trader_id")
+  trader   User   @relation(fields: [traderId], references: [id])
+
+  // timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 }
