@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { StringEnhancer } from './utils/StringEnhancer';
 import reportWebVitals from './reportWebVitals';
 
 import App from './App/App';
@@ -11,6 +12,8 @@ import store from './store';
 import './assets/scss/index.scss';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+
+StringEnhancer.enhance(String);
 
 root.render(
   <StrictMode>

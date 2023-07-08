@@ -3,7 +3,13 @@ import dayjs from 'dayjs/';
 import weekdayPlugin from 'dayjs/plugin/weekday';
 
 import { State } from '../store';
-import { setDate, setDay, setMonth, setStartDay, setYear } from '../store/actions/calendar';
+import {
+  setDate,
+  setDay,
+  setMonth,
+  setStartDay,
+  setYear,
+} from '../store/actions/calendar';
 import { useEffect } from 'react';
 import { CALENDAR } from '../constants';
 
@@ -44,7 +50,7 @@ export const useCalendar = () => {
     displayedDays,
     startDay: calendarState.startDay,
     month: calendarState.month,
-    currentMonth: CALENDAR.MONTHS[calendarState.month],
+    monthName: CALENDAR.MONTHS[calendarState.month],
     year: calendarState.year,
     setDate: (date: Date) => dispatch(setDate({ date })),
   };

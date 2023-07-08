@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Mailer } from '../../services/mailer';
 import { Token } from '../../services/token';
-import { CreateUserDto } from './dto/CreateUserDto';
+import { CreateUserDto } from './dto/create-user-dto';
 import { PrismaService } from '../../prisma.service';
 
 @Injectable()
@@ -100,7 +100,7 @@ export class AuthService {
       throw new BadRequestException('Invalid token.');
     }
 
-    if (user.authTokenExpires < new Date()) {
+    if (user.authTokenExpires && user.authTokenExpires < new Date()) {
       throw new BadRequestException('Token expired.');
     }
 

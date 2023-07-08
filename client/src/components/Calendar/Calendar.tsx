@@ -5,6 +5,7 @@ import { useCalendar } from '../../hooks/useCalendar';
 import Modal from '../Modal/Modal';
 import Portal from '../Portal/Portal';
 import classes from './Calendar.module.scss';
+import { TradeType } from '../../models/TradeType';
 
 export interface CalendarProps {}
 
@@ -13,16 +14,17 @@ export interface CalendarState {
   isDayDetailsModalOpen: boolean;
   clickedDate: string | null;
   tradeNotes: string;
-  tradeType: 'long' | 'short';
+  tradeType: TradeType;
   basePair: string;
   quotePair: string;
   entryPrice: string;
   exitPrice: string;
+  fees: string;
   quantity: string;
   trades: {
     id: number;
     date: string;
-    type: 'long' | 'short';
+    type: TradeType;
     madeProfit: boolean;
     notes: string;
     pair: {
@@ -31,6 +33,7 @@ export interface CalendarState {
     };
     entryPrice: number;
     exitPrice: number;
+    fees: number;
     quantity: number;
   }[];
 }
@@ -43,59 +46,20 @@ const Calendar: FC<CalendarProps> = () => {
     tradeNotes: '',
     entryPrice: '',
     exitPrice: '',
-    tradeType: 'long',
+    fees: '',
+    tradeType: TradeType.LONG,
     basePair: '',
     quotePair: '',
     quantity: '',
-    trades: [
-      {
-        id: 1,
-        date: '2022-09-01',
-        type: 'long',
-        madeProfit: true,
-        notes: 'Trade 1 notes',
-        pair: {
-          base: 'BTC',
-          quote: 'USDT',
-        },
-        entryPrice: 19574,
-        exitPrice: 20000,
-        quantity: 0.01547,
-      },
-      {
-        id: 2,
-        date: '2022-09-01',
-        type: 'short',
-        madeProfit: false,
-        notes: "I saw a reversal that didn't happen",
-        pair: {
-          base: 'BTC',
-          quote: 'USDT',
-        },
-        entryPrice: 20000,
-        exitPrice: 20147,
-        quantity: 0.005748,
-      },
-      {
-        id: 3,
-        date: '2022-09-03',
-        type: 'short',
-        madeProfit: true,
-        notes: 'Trade 3 notes',
-        pair: {
-          base: 'ETH',
-          quote: 'USDT',
-        },
-        entryPrice: 19574,
-        exitPrice: 19000,
-        quantity: 0.254,
-      },
-    ],
+    trades: [],
   });
 
-  const { today, currentMonth, days, day, month, year, startDay, displayedDays, setDate } = useCalendar();
+  const { today, days, day, month, year, startDay, displayedDays, setDate } =
+    useCalendar();
 
-  const onInputChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const onInputChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = event.target;
 
     if (name === 'tradeAmount' && value !== '' && !/^\d+$/.test(value)) {
@@ -118,6 +82,7 @@ const Calendar: FC<CalendarProps> = () => {
   };
 
   const onAddTrade = (event: FormEvent<HTMLFormElement>) => {
+    // TODO: Add trade to the database - redux action
     return setState((ps) => ({
       ...ps,
       isAddDayDataModalOpen: false,
@@ -129,7 +94,7 @@ const Calendar: FC<CalendarProps> = () => {
         quote: '',
       },
       quantity: '',
-      tradeType: 'long',
+      tradeType: TradeType.LONG,
       trades: [
         ...ps.trades,
         {
@@ -139,13 +104,16 @@ const Calendar: FC<CalendarProps> = () => {
           notes: state.tradeNotes,
           entryPrice: +state.entryPrice,
           exitPrice: +state.exitPrice,
+          fees: +state.fees,
           pair: {
             base: state.basePair,
             quote: state.quotePair,
           },
           quantity: +state.quantity,
           madeProfit:
-            state.tradeType === 'long' ? +state.exitPrice > +state.entryPrice : +state.exitPrice < +state.entryPrice,
+            state.tradeType === TradeType.LONG
+              ? +state.exitPrice > +state.entryPrice
+              : +state.exitPrice < +state.entryPrice,
         },
       ],
     }));
@@ -154,11 +122,42 @@ const Calendar: FC<CalendarProps> = () => {
   return (
     <div className={classes.Container}>
       <header>
-        <button onClick={() => setDate(new Date(year, month - 1, day))}>Prev</button>
+        <button onClick={() => setDate(new Date(year, month - 1, day))}>
+          &lt;&lt; Prev
+        </button>
         <div>
-          {currentMonth} {year}
+          <select
+            value={month}
+            name="month"
+            onChange={(event) =>
+              setDate(
+                new Date(year, Number((event.target as HTMLSelectElement).value), day),
+              )
+            }>
+            {CALENDAR.MONTHS.map((m, index) => (
+              <option key={m} value={index}>
+                {m}
+              </option>
+            ))}
+          </select>{' '}
+          <select
+            value={year}
+            name="year"
+            onChange={(event) =>
+              setDate(
+                new Date(Number((event.target as HTMLSelectElement).value), month, day),
+              )
+            }>
+            {CALENDAR.YEARS.map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
+          </select>
         </div>
-        <button onClick={() => setDate(new Date(year, month + 1, day))}>Next</button>
+        <button onClick={() => setDate(new Date(year, month + 1, day))}>
+          Next &gt;&gt;
+        </button>
       </header>
       <main>
         {CALENDAR.DAYS_OF_THE_WEEK.map((d) => (
@@ -185,11 +184,12 @@ const Calendar: FC<CalendarProps> = () => {
                 (t) =>
                   !isPreviousMonth &&
                   !isNextMonth &&
-                  t.date === `${year}-${month < 10 ? `0${month + 1}` : month + 1}-${dayNumber}`,
+                  t.date ===
+                    `${year}-${month < 10 ? `0${month + 1}` : month + 1}-${dayNumber}`,
               )
               .reduce(
                 (acc, curr) => {
-                  if (curr.type === 'long') {
+                  if (curr.type === TradeType.LONG) {
                     acc.amount += (curr.exitPrice - curr.entryPrice) * curr.quantity;
                   } else {
                     acc.amount += (curr.entryPrice - curr.exitPrice) * curr.quantity;
@@ -205,7 +205,9 @@ const Calendar: FC<CalendarProps> = () => {
             return (
               <div
                 className={`${classes.Day} ${d === day ? classes.Selected : ''} ${
-                  d === today.getDate() && month === today.getMonth() && year === today.getFullYear()
+                  d === today.getDate() &&
+                  month === today.getMonth() &&
+                  year === today.getFullYear()
                     ? classes.Today
                     : ''
                 }
@@ -218,7 +220,9 @@ const Calendar: FC<CalendarProps> = () => {
                   {dayData && dayData.trades > 0 && (
                     <>
                       <div className={classes.Day__Trades}>
-                        <span>{dayData.trades} trades</span>
+                        <span>
+                          {dayData.trades} trade{dayData.trades > 1 ? 's' : ''}
+                        </span>
                       </div>
                       <div>
                         <span>{dayData.amount.toFixed(2)}€</span>
@@ -226,7 +230,9 @@ const Calendar: FC<CalendarProps> = () => {
                     </>
                   )}
                 </div>
-                <span className={classes.Day__Number}>{+dayNumber > 0 ? dayNumber : ''}</span>
+                <span className={classes.Day__Number}>
+                  {+dayNumber > 0 ? dayNumber : ''}
+                </span>
               </div>
             );
           })}
@@ -248,26 +254,45 @@ const Calendar: FC<CalendarProps> = () => {
           <div className={classes.AddDayData}>
             <div>
               <label htmlFor="tradeType">Trade type</label>
-              <select name="tradeType" id="tradeType" value={state.tradeType} onChange={onInputChange}>
-                <option value="long">Long</option>
-                <option value="short">Short</option>
+              <select
+                name="tradeType"
+                id="tradeType"
+                value={state.tradeType}
+                onChange={onInputChange}>
+                <option value={TradeType.LONG}>Long</option>
+                <option value={TradeType.SHORT}>Short</option>
               </select>
             </div>
             <div>
               <label htmlFor="base-pair">
                 Base currency <span>(e.g. BTC)</span>
               </label>
-              <input name="basePair" id="base-pair" value={state.basePair} onChange={onInputChange} />
+              <input
+                name="basePair"
+                id="base-pair"
+                value={state.basePair}
+                onChange={onInputChange}
+              />
             </div>
             <div>
               <label htmlFor="quote-pair">
                 Quote currency <span>(e.g. USDT)</span>
               </label>
-              <input name="quotePair" id="quote-pair" value={state.quotePair} onChange={onInputChange} />
+              <input
+                name="quotePair"
+                id="quote-pair"
+                value={state.quotePair}
+                onChange={onInputChange}
+              />
             </div>
             <div>
               <label htmlFor="trade-notes">Notes</label>
-              <textarea name="tradeNotes" value={state.tradeNotes} onChange={onInputChange} id="trade-notes" />
+              <textarea
+                name="tradeNotes"
+                value={state.tradeNotes}
+                onChange={onInputChange}
+                id="trade-notes"
+              />
             </div>
             <div>
               <label htmlFor="entry-price">Entry price</label>
@@ -281,16 +306,41 @@ const Calendar: FC<CalendarProps> = () => {
             </div>
             <div>
               <label htmlFor="exit-price">Exit price</label>
-              <input name="exitPrice" value={state.exitPrice} onChange={onInputChange} id="exit-price" type="number" />
+              <input
+                name="exitPrice"
+                value={state.exitPrice}
+                onChange={onInputChange}
+                id="exit-price"
+                type="number"
+              />
+            </div>
+            <div>
+              <label htmlFor="fees">Fees (%)</label>
+              <input
+                name="fees"
+                value={state.fees}
+                onChange={onInputChange}
+                id="fees"
+                type="number"
+              />
             </div>
             <div>
               <label htmlFor="quantity">Quantity</label>
-              <input name="quantity" value={state.quantity} onChange={onInputChange} id="quantity" type="number" />
+              <input
+                name="quantity"
+                value={state.quantity}
+                onChange={onInputChange}
+                id="quantity"
+                type="number"
+              />
             </div>
           </div>
         </Modal>
       </Portal>
-      <Portal animate animationDuration={200} mount={state.isDayDetailsModalOpen && state.clickedDate !== null}>
+      <Portal
+        animate
+        animationDuration={200}
+        mount={state.isDayDetailsModalOpen && state.clickedDate !== null}>
         <Modal
           type="day-details"
           title={`${dayjs(state.clickedDate).format('DD MMMM YYYY')}`}
@@ -316,6 +366,7 @@ const Calendar: FC<CalendarProps> = () => {
                     <th>Type</th>
                     <th>Entry price</th>
                     <th>Exit price</th>
+                    <th>Fees</th>
                     <th>Quantity</th>
                     <th>Notes</th>
                     <th>Profitable</th>
@@ -331,15 +382,16 @@ const Calendar: FC<CalendarProps> = () => {
                           {trade.pair.base}/{trade.pair.quote}
                         </td>
                         <td className={classes.Trade_Type}>
-                          {trade.type === 'long' ? (
+                          {trade.type === TradeType.LONG ? (
                             <span className={classes.Trade_Long}>&#8593;</span>
                           ) : (
                             <span className={classes.Trade_Short}>&#8595;</span>
                           )}
-                          <span>{trade.type}</span>
+                          <span>{trade.type.ucfirst()}</span>
                         </td>
                         <td>{trade.entryPrice}</td>
                         <td>{trade.exitPrice}</td>
+                        <td>{trade.fees}</td>
                         <td>{trade.quantity}</td>
                         <td>{trade.notes}</td>
                         <td>
@@ -350,25 +402,43 @@ const Calendar: FC<CalendarProps> = () => {
                           )}
                         </td>
                         <td>
-                          {trade.type === 'long'
-                            ? ((trade.exitPrice - trade.entryPrice) * trade.quantity).toFixed(2)
-                            : ((trade.entryPrice - trade.exitPrice) * trade.quantity).toFixed(2)}
+                          {trade.type === TradeType.LONG
+                            ? (
+                                (trade.exitPrice - trade.entryPrice) * trade.quantity -
+                                (trade.exitPrice - trade.entryPrice) *
+                                  trade.quantity *
+                                  (trade.fees / 100)
+                              ).toFixed(2)
+                            : (
+                                (trade.entryPrice - trade.exitPrice) * trade.quantity -
+                                (trade.entryPrice - trade.exitPrice) *
+                                  trade.quantity *
+                                  (trade.fees / 100)
+                              ).toFixed(2)}
                         </td>
                       </tr>
                     ))}
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan={7}>Total</td>
+                    <td colSpan={8}>Total</td>
                     <td>
                       {state.trades
                         .filter((t) => t.date === state.clickedDate)
                         .reduce((acc, curr) => {
-                          if (curr.type === 'long') {
-                            acc += (curr.exitPrice - curr.entryPrice) * curr.quantity;
-                          } else {
-                            acc += (curr.entryPrice - curr.exitPrice) * curr.quantity;
-                          }
+                          const shortValue =
+                            (curr.entryPrice - curr.exitPrice) * curr.quantity -
+                            (curr.entryPrice - curr.exitPrice) *
+                              curr.quantity *
+                              (curr.fees / 100);
+
+                          const longValue =
+                            (curr.exitPrice - curr.entryPrice) * curr.quantity -
+                            (curr.exitPrice - curr.entryPrice) *
+                              curr.quantity *
+                              (curr.fees / 100);
+
+                          acc += curr.type === TradeType.LONG ? longValue : shortValue;
 
                           return acc;
                         }, 0)

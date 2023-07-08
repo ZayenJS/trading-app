@@ -40,11 +40,12 @@ model Trade {
   type          TradeType
   baseCurrency  String    @map("base_currency")
   quoteCurrency String    @map("quote_currency")
+  fees          Float     @default(0.1)
   notes         String?
-  entry_price   Float     @map("entry_price")
-  exit_price    Float     @map("exit_price")
-  entry_date    DateTime  @map("entry_date")
-  exit_date     DateTime? @map("exit_date")
+  entryPrice    Float     @map("entry_price")
+  exitPrice     Float?    @map("exit_price")
+  entryDate     DateTime  @map("entry_date")
+  exitDate      DateTime? @map("exit_date")
   quantity      Float
 
   // relations
