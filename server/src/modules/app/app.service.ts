@@ -11,10 +11,6 @@ export class AppService {
     if (session.user) {
       const user = session.user;
 
-      delete user.authToken;
-      delete user.authTokenExpires;
-      delete user.updatedAt;
-
       response.user = user;
     }
 

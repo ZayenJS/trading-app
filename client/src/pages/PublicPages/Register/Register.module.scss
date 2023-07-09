@@ -1,0 +1,31 @@
+@import '../../../assets/scss/placeholders';
+
+.container {
+  @extend %authContainer;
+}
+
+.formGroup {
+  @include flex(center, flex-start, row nowrap, 1rem);
+
+  input {
+    @include input;
+    width: 100%;
+  }
+}
+
+.sendTokenButton {
+  @include button-main;
+}
+
+.registerButton {
+  @include button-success;
+}
+
+.loginContainer {
+  @include flex(center, $flex-flow: column, $gap: 1rem);
+}
+
+.toLoginButton {
+  @include button-main;
+  width: fit-content;
+}

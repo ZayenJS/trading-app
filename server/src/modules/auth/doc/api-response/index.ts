@@ -1,4 +1,15 @@
 export default {
+  checkUser: {
+    200: {
+      status: 200,
+      description: 'The user is logged in',
+    },
+    401: {
+      status: 401,
+      description: 'The user is not logged in',
+    },
+  },
+
   token: {
     200: {
       status: 200,

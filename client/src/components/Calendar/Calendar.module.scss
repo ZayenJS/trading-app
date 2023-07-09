@@ -76,7 +76,7 @@
 }
 
 .Modal {
-  max-width: 35rem;
+  max-width: 50rem;
 
   div.Modal__Body {
     flex-flow: column nowrap;
@@ -84,7 +84,7 @@
 }
 
 .AddDayData {
-  @include flex(center, space-between, column nowrap);
+  @include flex(center, space-between, column nowrap, 1rem);
 
   div {
     display: grid;

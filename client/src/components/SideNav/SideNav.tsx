@@ -1,5 +1,5 @@
 import { FC, FormEvent, useMemo } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
 
 import classes from './SideNav.module.scss';
@@ -7,6 +7,7 @@ import classes from './SideNav.module.scss';
 export interface SideNavProps {}
 
 const SideNav: FC<SideNavProps> = () => {
+  const navigate = useNavigate();
   const navLinkActiveClass = ({ isActive }: { isActive: boolean }) =>
     isActive ? `${classes.NavLink} ${classes.Active}` : classes.NavLink;
 
@@ -22,11 +23,11 @@ const SideNav: FC<SideNavProps> = () => {
         name: 'Backtester',
         to: '/backtester',
       },
-      // {
-      //   key: 3,
-      //   name: 'Strategies',
-      //   to: '/strategies',
-      // },
+      {
+        key: 3,
+        name: 'Projector',
+        to: '/projector',
+      },
       {
         key: 4,
         name: 'Trading Calendar',
@@ -48,9 +49,11 @@ const SideNav: FC<SideNavProps> = () => {
     [linksData],
   );
 
-  const onFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('Logout');
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    navigate('/login');
   };
 
   return (

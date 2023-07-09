@@ -36,9 +36,101 @@
   }
 }
 
-@mixin flex($align-items: stretch, $justify-content: flex-start, $flex-flow: row nowrap) {
+@mixin rwd($breakpoint: $md) {
+  @media (min-width: $breakpoint) {
+    @content;
+  }
+}
+
+@mixin flex(
+  $align-items: stretch,
+  $justify-content: flex-start,
+  $flex-flow: row nowrap,
+  $gap: 0
+) {
   display: flex;
   align-items: $align-items;
   justify-content: $justify-content;
   flex-flow: $flex-flow;
+  gap: $gap;
+}
+
+@mixin input {
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: 2px solid hsl(218, 14%, 33%);
+  }
+}
+
+@mixin button {
+  border: none;
+  width: 100%;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  transition: all 0.2s ease;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+@mixin button-main {
+  @include button;
+  background-color: $btn-main-bg-color;
+  color: #fff;
+
+  &:hover {
+    background-color: lighten($btn-main-bg-color, 10%);
+
+    &:disabled {
+      background-color: $btn-main-bg-color;
+    }
+  }
+}
+
+@mixin button-secondary {
+  @include button;
+  background-color: $btn-reset-bg-color;
+  color: #fff;
+
+  &:hover {
+    background-color: lighten($btn-reset-bg-color, 10%);
+
+    &:disabled {
+      background-color: $btn-reset-bg-color;
+    }
+  }
+}
+
+@mixin button-success {
+  @include button;
+  background-color: $btn-profit-bg-color;
+  color: #fff;
+
+  &:hover {
+    background-color: lighten($btn-profit-bg-color, 10%);
+
+    &:disabled {
+      background-color: $btn-profit-bg-color;
+    }
+  }
+}
+
+@mixin button-danger {
+  @include button;
+  background-color: $btn-loss-bg-color;
+  color: #fff;
+
+  &:hover {
+    background-color: lighten($btn-loss-bg-color, 10%);
+
+    &:disabled {
+      background-color: $btn-loss-bg-color;
+    }
+  }
 }

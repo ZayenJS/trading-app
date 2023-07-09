@@ -16,13 +16,11 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 StringEnhancer.enhance(String);
 
 root.render(
-  <StrictMode>
-    <Router>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </Router>
-  </StrictMode>,
+  <Router>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </Router>,
 );
 
 // If you want to start measuring performance in your app, pass a function

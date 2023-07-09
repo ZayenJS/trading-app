@@ -1,0 +1,41 @@
+@import './mixins';
+@import './variables';
+
+%authContainer {
+  background-image: url('../../assets/images/login-screen.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 30%;
+  background-attachment: fixed;
+  min-height: 100vh;
+
+  form {
+    display: grid;
+    gap: 1rem;
+    position: fixed;
+    translate: -50% -50%;
+    top: 50%;
+    left: 50%;
+    background: rgba(51, 71, 85, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(11px);
+    -webkit-backdrop-filter: blur(11px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 2rem;
+    font-size: 1.25rem;
+
+    hr {
+      width: 100%;
+    }
+
+    label {
+      font-size: 1.25rem;
+    }
+  }
+
+  .formGroup {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+  }
+}
